@@ -1,153 +1,171 @@
-# Phaser Vite Template
+# ECHOFLUX: RIFTBREAK ARENA
 
-This is a Phaser 4 project template that uses Vite for bundling. It supports hot-reloading for quick development workflow and includes scripts to generate production-ready builds.
+A futuristic top-down action roguelite for the browser. Pilot a rift-craft
+through two overlapping realities — **Cyan ◇** and **Amber ○** — outfight
+escalating waves, draft augments, and break three bosses to close the Rift.
 
-**[This Template is also available as a TypeScript version.](https://github.com/phaserjs/template-vite-ts)**
+Built with **Phaser 4 + Vite**. All artwork and audio are generated
+procedurally at runtime — zero image or sound assets, no external requests,
+fully static deployable.
 
-### Versions
+![gameplay](submission/gameplay-preview.png)
 
-This template has been updated for:
+## Quick start
 
-- [Phaser 4.0.0](https://github.com/phaserjs/phaser)
-- [Vite 6.3.1](https://github.com/vitejs/vite)
-
-![screenshot](screenshot.png)
-
-## Requirements
-
-[Node.js](https://nodejs.org) is required to install dependencies and run scripts via `npm`.
-
-## Available Commands
+```bash
+npm install      # install dependencies
+npm run dev      # dev server at http://localhost:8080
+```
 
 | Command | Description |
-|---------|-------------|
-| `npm install` | Install project dependencies |
-| `npm run dev` | Launch a development web server |
-| `npm run build` | Create a production build in the `dist` folder |
-| `npm run dev-nolog` | Launch a development web server without sending anonymous data (see "About log.js" below) |
-| `npm run build-nolog` | Create a production build in the `dist` folder without sending anonymous data (see "About log.js" below) |
+|---|---|
+| `npm run dev` | Vite dev server (port 8080) |
+| `npm run build` | Production build into `dist/` |
+| `npm run preview` | Serve the production build locally |
+| `npm test` | Unit test suite (pure gameplay logic — 70 tests) |
+| `npm run test:e2e` | Headless-browser smoke suite against `dist/` (build first) |
 
+## Controls
 
-## Writing Code
+**Desktop**
 
-After cloning the repo, run `npm install` from your project directory. Then, you can start the local development server by running `npm run dev`.
+| Action | Input |
+|---|---|
+| Move | WASD or arrow keys |
+| Shift reality | SPACE or right-click |
+| Pause | ESC or P |
+| Confirm focused button | ENTER |
 
-The local development server runs on `http://localhost:8080` by default. Please see the Vite documentation if you wish to change this, or add SSL support.
+**Touch (phones and tablets — auto-detected, no user-agent sniffing)**
 
-Once the server is running you can edit any of the files in the `src` folder. Vite will automatically recompile your code and then reload the browser.
+| Action | Input |
+|---|---|
+| Move | Virtual joystick — drag anywhere on the left half |
+| Shift reality | Large ◇/○ button, bottom right |
+| Pause | Button, top right |
 
-## Template Project Structure
+## How to play
 
-We have provided a default project structure to get you started. This is as follows:
+- Enemies, projectiles, hazards, and energy motes each belong to **one
+  reality**. You can only damage — and be damaged by — what shares **your**
+  reality. Out-of-phase enemies appear ghosted with a phase marker above them.
+- **Shift reality** to dodge in the safe dimension or to strike in theirs.
+  Switching is instant but has a short cooldown.
+- **Destabilization**: ignore an enemy too long and it destabilizes — it
+  pulses white and fires *phase-piercing* volleys that hit both realities.
+  Camping in the safe reality is not a strategy.
+- **Flux motes** drop from defeated enemies in their reality; collect in-phase
+  to charge the **RIFT meter**. Full meter triggers **Overdrive** (double fire
+  rate, +25% damage).
+- Auto-fire targets the nearest enemy sharing your reality — positioning and
+  phase choice are the whole game.
+- Phases are readable without color: angular silhouettes + ◇ markers + grid
+  patterns are Cyan; rounded silhouettes + ○ markers + ring patterns are Amber.
 
-| Path                         | Description                                                |
-|------------------------------|------------------------------------------------------------|
-| `index.html`                 | A basic HTML page to contain the game.                     |
-| `public/assets`              | Game sprites, audio, etc. Served directly at runtime.      |
-| `public/style.css`           | Global layout styles.                                      |
-| `src/main.js`                | Application bootstrap.                                     |
-| `src/game`                   | Folder containing the game code.                           |
-| `src/game/main.js`           | Game entry point: configures and starts the game.          |
-| `src/game/scenes`            | Folder with all Phaser game scenes.                        | 
+## Content
 
-## Handling Assets
+- **Campaign**: 12 authored waves across 3 arenas, ending with three boss
+  encounters — **HELIX PRISM** (wave 4), **MAGMA CHOIR** (wave 8),
+  **THE RIFTKEEPER** (wave 12). Bosses telegraph attacks, flip their
+  vulnerability phase on a timer, and enrage below 30% HP.
+- **24 upgrades** across six categories (offense, mobility, defense, economy,
+  phase, utility), offered between waves with validated stacking rules.
+- **Endless mode**: unlock-free, from the main menu, and continues after the
+  campaign victory. Scaling enemy budgets, elite chance ramps to 25%, and a
+  cycling boss every 4 sectors with growing HP.
+- **7 enemy archetypes** with distinct behaviors (pursuit, telegraphed dash
+  charges, ranged kiting, orbiting spirals, frontal-shield tanks, splitters,
+  healers) plus **elite variants** with homing volleys.
 
-Vite supports loading assets via JavaScript module `import` statements.
+## Settings & saving
 
-This template provides support for both embedding assets and also loading them from a static folder. To embed an asset, you can import it at the top of the JavaScript file you are using it in:
+Settings (music/sfx volume, reduced motion), best score, and best waves are
+stored in `localStorage` under `echoflux.save.v1` with full validation —
+corrupt, blocked, or unavailable storage falls back to safe defaults and the
+game stays playable (incognito-safe). Progression is **local only**; nothing is
+synced or uploaded.
 
-```js
-import logoImg from './assets/logo.png'
+## Poki integration
+
+The official Poki SDK (v2) is integrated per
+[developers.poki.com](https://developers.poki.com):
+
+- SDK script tag in `index.html`; safe init with documented fallback when
+  unavailable.
+- `gameLoadingFinished()` fires once the menu is interactive.
+- `gameplayStart()` on the first actual gameplay input; `gameplayStop()` on
+  pause, wave end, death, victory, quit, and boss intros — no duplicate or
+  consecutive events, and all gameplay events are blocked during ad breaks.
+- `commercialBreak()` at natural restarts (resume, next wave, restart),
+  audio and input muted during breaks, restored after.
+- Optional **Second Chance** revive via `rewardedBreak()` on the death
+  screen — standard END RUN button is equal-sized and adjacent, per Poki's
+  hierarchy rules; rewards are only granted on genuine SDK success.
+
+See `docs/POKI_CHECKLIST.md` for the submission checklist and
+`src/game/systems/PokiAdapter.js` for the integration (unit-tested state
+machine in `tests/poki.test.js`).
+
+## Project structure
+
+```
+src/main.js                    bootstrap (context + game)
+src/game/main.js               Phaser config (1280x720, Scale.FIT)
+src/game/scenes/               Boot, Preloader, MainMenu, Game
+src/game/core/                 Balance, PhaseRules, CombatRules, RunState,
+                               Waves, Palette, EventBus, Context
+src/game/systems/              Upgrades, ScoreSystem, SaveSystem,
+                               PokiAdapter, AudioSystem, InputSystem,
+                               WaveDirector
+src/game/entities/             Player, Enemy, Boss, Pickup (motes), Hazard
+src/game/gfx/                  TextureFactory (procedural art), ArenaBackground, Fx
+src/game/ui/                   HUD, UpgradeUI, PauseUI, SettingsUI,
+                               TutorialUI, EndRunUI, UI kit
+tests/                         unit tests (node --test, no dependencies)
+e2e/smoke.mjs                  headless-browser smoke suite (playwright-core)
+docs/                          notices, checklists, QA report
 ```
 
-To load static files such as audio files, videos, etc place them into the `public/assets` folder. Then you can use this path in the Loader calls within Phaser:
+Architecture notes: gameplay rules live in framework-free modules under
+`src/game/core` and `src/game/systems` (unit-testable in Node); Phaser-coupled
+code stays in scenes/entities/UI. One authoritative run state per session, an
+explicit UI state machine, manual object pools, delta-time-driven movement,
+and a single update accumulator that freezes with the game (no gameplay
+timers survive a pause).
 
-```js
-preload ()
-{
-    //  This is an example of an imported bundled image.
-    //  Remember to import it at the top of this file
-    this.load.image('logo', logoImg);
+## Deployment
 
-    //  This is an example of loading a static image
-    //  from the public/assets folder:
-    this.load.image('background', 'assets/bg.png');
-}
-```
-
-When you issue the `npm run build` command, all static assets are automatically copied to the `dist/assets` folder.
-
-## Deploying to Production
-
-After you run the `npm run build` command, your code will be built into a single bundle and saved to the `dist` folder, along with any other assets your project imported, or stored in the public assets folder.
-
-In order to deploy your game, you will need to upload *all* of the contents of the `dist` folder to a public facing web server.
-
-## Customizing the Template
-
-### Vite
-
-If you want to customize your build, such as adding plugin (i.e. for loading CSS or fonts), you can modify the `vite/config.*.mjs` file for cross-project changes, or you can modify and/or create new configuration files and target them in specific npm tasks inside of `package.json`. Please see the [Vite documentation](https://vitejs.dev/) for more information.
-
-## About log.js
-
-If you inspect our node scripts you will see there is a file called `log.js`. This file makes a single silent API call to a domain called `gryzor.co`. This domain is owned by Phaser Studio Inc. The domain name is a homage to one of our favorite retro games.
-
-We send the following 3 pieces of data to this API: The name of the template being used (vue, react, etc). If the build was 'dev' or 'prod' and finally the version of Phaser being used.
-
-At no point is any personal data collected or sent. We don't know about your project files, device, browser or anything else. Feel free to inspect the `log.js` file to confirm this.
-
-Why do we do this? Because being open source means we have no visible metrics about which of our templates are being used. We work hard to maintain a large and diverse set of templates for Phaser developers and this is our small anonymous way to determine if that work is actually paying off, or not. In short, it helps us ensure we're building the tools for you.
-
-However, if you don't want to send any data, you can use these commands instead:
-
-Dev:
+The production build is a fully static site:
 
 ```bash
-npm run dev-nolog
+npm run build
+# upload the contents of dist/ to any static host
 ```
 
-Build:
+No backend, no database, no runtime services. `dist/` contains `index.html`,
+hashed JS, CSS, and the favicon — nothing else.
 
-```bash
-npm run build-nolog
-```
+## Testing
 
-Or, to disable the log entirely, simply delete the file `log.js` and remove the call to it in the `scripts` section of `package.json`:
+- `npm test` — 70 unit tests covering the phase damage matrix,
+  destabilization timing, combat resolution (i-frames, shield, second wind,
+  idempotent death rewards), upgrade definitions/validation/stacking, wave
+  table integrity + endless scaling, save corruption/quota/incognito
+  behavior, scoring bounds, and the Poki event state machine.
+- `npm run test:e2e` — boots the production build in headless Chrome and
+  walks the real flows: menu → campaign → movement/phase-switch → pause/
+  resume → wave clear → upgrade draft → death → results → restart → boss
+  intro → boss kill → victory → endless continue, plus a mobile emulation
+  session with touch joystick and phase-button taps. Fails on any console
+  error or page error. Screenshots land in `e2e/screenshots/`.
 
-Before:
+## License & credits
 
-```json
-"scripts": {
-    "dev": "node log.js dev & dev-template-script",
-    "build": "node log.js build & build-template-script"
-},
-```
-
-After:
-
-```json
-"scripts": {
-    "dev": "dev-template-script",
-    "build": "build-template-script"
-},
-```
-
-Either of these will stop `log.js` from running. If you do decide to do this, please could you at least join our Discord and tell us which template you're using! Or send us a quick email. Either will be super-helpful, thank you.
-
-## Join the Phaser Community!
-
-We love to see what developers like you create with Phaser! It really motivates us to keep improving. So please join our community and show-off your work 😄
-
-**Visit:** The [Phaser website](https://phaser.io) and follow on [Phaser Twitter](https://twitter.com/phaser_)<br />
-**Play:** Some of the amazing games [#madewithphaser](https://twitter.com/search?q=%23madewithphaser&src=typed_query&f=live)<br />
-**Learn:** [API Docs](https://newdocs.phaser.io), [Support Forum](https://phaser.discourse.group/) and [StackOverflow](https://stackoverflow.com/questions/tagged/phaser-framework)<br />
-**Discord:** Join us on [Discord](https://discord.gg/phaser)<br />
-**Code:** 2000+ [Examples](https://labs.phaser.io)<br />
-**Read:** The [Phaser World](https://phaser.io/community/newsletter) Newsletter<br />
-
-Created by [Phaser Studio](mailto:support@phaser.io). Powered by coffee, anime, pixels and love.
-
-The Phaser logo and characters are &copy; 2011 - 2025 Phaser Studio Inc.
-
-All rights reserved.
+- This repository's game code is original work, distributed under the MIT
+  license (see `LICENSE`).
+- Built on **Phaser 4** (MIT, © Phaser Studio Inc) — see
+    `docs/THIRD_PARTY_NOTICES.md`.
+- The Poki SDK script is loaded from Poki's CDN and governed by the Poki for
+  Developers terms.
+- All artwork, typography, and audio in this game are generated
+  procedurally by this project's own code. No third-party assets are bundled.

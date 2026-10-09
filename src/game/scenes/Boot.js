@@ -1,22 +1,16 @@
-import { Scene } from 'phaser';
+// Boot: all art is generated procedurally here (no files to download), then
+// the Preloader takes over for the title/loading beat.
 
-export class Boot extends Scene
-{
-    constructor ()
-    {
+import { Scene } from 'phaser';
+import { buildAllTextures } from '../gfx/TextureFactory.js';
+
+export class Boot extends Scene {
+    constructor() {
         super('Boot');
     }
 
-    preload ()
-    {
-        //  The Boot Scene is typically used to load in any assets you require for your Preloader, such as a game logo or background.
-        //  The smaller the file size of the assets, the better, as the Boot Scene itself has no preloader.
-
-        this.load.image('background', 'assets/bg.png');
-    }
-
-    create ()
-    {
+    create() {
+        buildAllTextures(this);
         this.scene.start('Preloader');
     }
 }

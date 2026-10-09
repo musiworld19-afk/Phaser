@@ -23,3 +23,6 @@ dist-ssr
 *.sln
 *.sw?
 .ideavo/project
+
+# Generated QA evidence (reproduced with npm run test:e2e)
+e2e/screenshots

@@ -1,0 +1,117 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8" />
+<style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html, body { width: 1920px; height: 1080px; overflow: hidden; }
+    body {
+        background: radial-gradient(ellipse at 50% 46%, #16204d 0%, #0b1230 45%, #05070f 100%);
+        font-family: "Arial Black", Arial, sans-serif;
+        position: relative;
+    }
+    .stars {
+        position: absolute; inset: 0;
+        background-image:
+            radial-gradient(1.5px 1.5px at 12% 20%, #fff8 50%, transparent 51%),
+            radial-gradient(1px 1px at 78% 12%, #fff6 50%, transparent 51%),
+            radial-gradient(2px 2px at 32% 78%, #9be9ff88 50%, transparent 51%),
+            radial-gradient(1px 1px at 88% 62%, #fff5 50%, transparent 51%),
+            radial-gradient(1.5px 1.5px at 55% 32%, #ffd9a077 50%, transparent 51%),
+            radial-gradient(1px 1px at 20% 55%, #fff4 50%, transparent 51%),
+            radial-gradient(2px 2px at 68% 84%, #9be9ff66 50%, transparent 51%);
+    }
+    .grid {
+        position: absolute; inset: 0; opacity: 0.14;
+        background-image: linear-gradient(#35e0ff 1px, transparent 1px), linear-gradient(90deg, #35e0ff 1px, transparent 1px);
+        background-size: 90px 90px;
+        transform: perspective(700px) rotateX(48deg) scale(2.2) translateY(240px);
+        transform-origin: 50% 100%;
+    }
+    .rings {
+        position: absolute; left: 50%; top: 46%; width: 1500px; height: 1500px;
+        transform: translate(-50%, -50%);
+        border-radius: 50%;
+        border: 2px solid #ffb43a2e;
+        box-shadow: 0 0 0 70px #05070f00, 0 0 0 140px #ffb43a1a, 0 0 0 210px #ffb43a12, 0 0 0 280px #ffb43a0c;
+    }
+    .split-l { position: absolute; inset: 0; background: linear-gradient(100deg, #35e0ff14 0%, transparent 46%); }
+    .split-r { position: absolute; inset: 0; background: linear-gradient(260deg, #ffb43a14 0%, transparent 46%); }
+    .emblem { position: absolute; left: 50%; top: 44%; transform: translate(-50%, -50%) rotate(45deg); }
+    .emblem .outer {
+        width: 420px; height: 420px; border: 10px solid #35e0ff; border-radius: 18px;
+        box-shadow: 0 0 60px #35e0ff88, inset 0 0 40px #35e0ff44;
+        position: relative;
+    }
+    .emblem .inner {
+        position: absolute; inset: 64px; border: 6px solid #f4f7ff; border-radius: 10px;
+        background: #05070f;
+    }
+    .emblem .core {
+        position: absolute; left: 50%; top: 50%; width: 56px; height: 56px;
+        transform: translate(-50%, -50%) rotate(0deg); border-radius: 50%;
+        background: radial-gradient(circle, #fff 0%, #ffb43a 45%, #ffb43a00 75%);
+        box-shadow: 0 0 46px #ffb43a;
+    }
+    .shard {
+        position: absolute; width: 46px; height: 46px; background: #35e0ff;
+        transform: rotate(45deg); border-radius: 6px;
+        box-shadow: 0 0 18px #35e0ffaa;
+    }
+    .shard.s1 { left: 49%; top: 8%; }
+    .shard.s2 { left: 90%; top: 62%; background: #ffb43a; box-shadow: 0 0 18px #ffb43aaa; }
+    .shard.s3 { left: 46.5%; top: 84%; }
+    .craft {
+        position: absolute; left: 50%; top: 44%;
+        transform: translate(-50%, -30%);
+        width: 0; height: 0;
+        border-left: 26px solid transparent; border-right: 26px solid transparent;
+        border-bottom: 92px solid #dfe7ff;
+        filter: drop-shadow(0 0 24px #35e0ffcc);
+    }
+    .craft::after {
+        content: ""; position: absolute; left: -13px; top: 34px;
+        width: 26px; height: 34px; background: #35e0ffcc;
+        clip-path: polygon(0 0, 100% 0, 50% 100%);
+    }
+    .title {
+        position: absolute; left: 50%; bottom: 150px; transform: translateX(-50%);
+        text-align: center; width: 100%;
+    }
+    .title h1 {
+        font-size: 118px; letter-spacing: 26px; text-indent: 26px; color: #f4f7ff;
+        text-shadow: 0 0 34px #35e0ff66, 0 6px 0 #05070f;
+    }
+    .title h2 {
+        margin-top: 18px; font-size: 34px; letter-spacing: 20px; text-indent: 20px;
+        color: #35e0ff; text-shadow: 0 0 18px #35e0ff77;
+    }
+    .title h2 .cyan { color: #35e0ff; text-shadow: 0 0 18px #35e0ff77; }
+    .title h2 .amber { color: #ffb43a; text-shadow: 0 0 18px #ffb43a77; }
+    .badge {
+        position: absolute; left: 50%; top: 76%; transform: translateX(-50%);
+        font-size: 24px; letter-spacing: 8px; color: #aab4d8;
+        font-family: "Segoe UI", Arial, sans-serif; font-weight: 600;
+    }
+</style>
+</head>
+<body>
+    <div class="stars"></div>
+    <div class="split-l"></div>
+    <div class="split-r"></div>
+    <div class="grid"></div>
+    <div class="rings"></div>
+    <div class="shard s1"></div>
+    <div class="shard s2"></div>
+    <div class="shard s3"></div>
+    <div class="emblem">
+        <div class="outer"><div class="inner"><div class="core"></div></div></div>
+    </div>
+    <div class="craft"></div>
+    <div class="title">
+        <h1>ECHOFLUX</h1>
+        <h2><span class="cyan">RIFTBREAK</span> <span class="amber">ARENA</span></h2>
+    </div>
+    <div class="badge">SWITCH REALITIES · SURVIVE THE RIFT</div>
+</body>
+</html>

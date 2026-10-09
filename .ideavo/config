@@ -7,24 +7,35 @@
       "command": "npm install"
     }
   ],
-  "codeChecks": [],
+  "codeChecks": [
+    {
+      "name": "Run Unit Tests",
+      "command": "npm test"
+    }
+  ],
   "buildSteps": [
     {
       "name": "Build Project",
-      "command": "npm run build-nolog"
+      "command": "npm run build"
     }
   ],
   "runStep": [
     {
       "name": "Run Dev Server",
-      "command": "npm run dev-nolog -- --host 0.0.0.0 --port 8080",
+      "command": "npm run dev -- --host 0.0.0.0 --port 8080",
       "port": "8080"
     }
   ],
-  "deploySteps": [],
+  "deploySteps": [
+    {
+      "name": "Deploy Static Build",
+      "command": "npx vercel deploy dist --prod"
+    }
+  ],
   "cleanupFiles": [
     "node_modules",
-    "dist"
+    "dist",
+    "e2e/screenshots"
   ],
   "packageManager": "npm",
   "envPaths": [

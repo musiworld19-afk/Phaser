@@ -2,15 +2,32 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/png" href="/favicon.png" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="/style.css">
-    <title>Phaser - Template</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+    <title>ECHOFLUX: RIFTBREAK ARENA</title>
+    <meta name="description" content="Pilot a rift-craft through fractured realities. Switch between Cyan and Amber dimensions, outfight escalating swarms, and break the Rift." />
+    <meta name="theme-color" content="#05070f" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="stylesheet" href="/style.css" />
+    <script src="https://game-cdn.poki.com/scripts/v2/poki-sdk.js"></script>
+    <script>
+        // Prevent page jump (Poki requirement).
+        // NOTE: space/arrow keydown preventDefault is NOT done here — Phaser's
+        // keyboard captures (see InputSystem.addCapture) already call
+        // preventDefault on gameplay keys, and Phaser ignores events that were
+        // defaultPrevented by earlier listeners. Wheel scroll is suppressed
+        // directly since the game never uses it.
+        window.addEventListener('wheel', ev => ev.preventDefault(), { passive: false });
+    </script>
 </head>
 
 <body>
     <div id="app">
         <div id="game-container"></div>
+    </div>
+    <div id="boot-splash" aria-hidden="true">
+        <div class="splash-emblem"></div>
+        <div class="splash-title">ECHOFLUX</div>
+        <div class="splash-sub">RIFTBREAK ARENA</div>
     </div>
     <script type="module" src="src/main.js"></script>
 </body>

@@ -1,0 +1,12 @@
+import { createServer } from 'node:http';
+import { chromium } from 'playwright-core';
+const server = createServer((req, res) => { res.writeHead(200); res.end('x'); });
+await new Promise(r => server.listen(4182, r));
+const browser = await chromium.launch({ executablePath: '/usr/bin/google-chrome', headless: true, args: ['--no-sandbox'] });
+const page = await browser.newPage({ viewport: { width: 844, height: 390 }, hasTouch: true, isMobile: true });
+await page.goto('http://localhost:4182/', { waitUntil: 'domcontentloaded' });
+console.log('inner:', await page.evaluate(() => `${window.innerWidth}x${window.innerHeight} dpr=${window.devicePixelRatio}`));
+console.log('vw/dvh:', await page.evaluate(() => `${document.documentElement.clientWidth}x${document.documentElement.clientHeight}`));
+await browser.close();
+server.close();
+process.exit(0);

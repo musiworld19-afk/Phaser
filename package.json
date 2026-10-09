@@ -1,26 +1,18 @@
 {
-  "name": "template-vite",
-  "description": "A Phaser 3 template using Vite.",
-  "version": "1.4.0",
+  "name": "echoflux-riftbreak-arena",
+  "description": "ECHOFLUX: RIFTBREAK ARENA - a top-down action roguelite with tactical reality switching, built with Phaser 4 and Vite.",
+  "version": "1.0.0",
   "type": "module",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/phaserjs/template-vite.git"
-  },
-  "author": "Phaser Studio <support@phaser.io> (https://phaser.io/)",
   "license": "MIT",
-  "licenseUrl": "http://www.opensource.org/licenses/mit-license.php",
-  "bugs": {
-    "url": "https://github.com/phaserjs/template-vite/issues"
-  },
-  "homepage": "https://github.com/phaserjs/template-vite#readme",
   "scripts": {
-    "dev": "node log.js dev & vite --config vite/config.dev.mjs",
-    "build": "node log.js build & vite build --config vite/config.prod.mjs",
-    "dev-nolog": "vite --config vite/config.dev.mjs",
-    "build-nolog": "vite build --config vite/config.prod.mjs"
+    "dev": "vite --config vite/config.dev.mjs",
+    "build": "vite build --config vite/config.prod.mjs",
+    "preview": "vite preview --config vite/config.prod.mjs --port 8080",
+    "test": "node --test",
+    "test:e2e": "node e2e/smoke.mjs"
   },
   "devDependencies": {
+    "playwright-core": "^1.64.0",
     "terser": "^5.39.0",
     "vite": "^6.3.1"
   },
