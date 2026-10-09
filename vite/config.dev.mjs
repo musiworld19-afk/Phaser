@@ -12,6 +12,8 @@ export default defineConfig({
         },
     },
     server: {
-        port: 8080
+        port: 8080,
+        host: true,
+        allowedHosts: ['e2b.app', '.e2b.app']
     }
 });
